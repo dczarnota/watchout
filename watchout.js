@@ -20,7 +20,12 @@ var enemyData = [{"id": 1, "x":Math.random()*800, "y":Math.random()*500},
 {"id": 7, "x":Math.random()*800, "y":Math.random()*500},
 {"id": 8, "x":Math.random()*800, "y":Math.random()*500},
 {"id": 9, "x":Math.random()*800, "y":Math.random()*500},
-{"id": 10, "x":Math.random()*800, "y":Math.random()*500}];
+{"id": 10, "x":Math.random()*800, "y":Math.random()*500},
+{"id": 11, "x":Math.random()*800, "y":Math.random()*500},
+{"id": 12, "x":Math.random()*800, "y":Math.random()*500},
+{"id": 13, "x":Math.random()*800, "y":Math.random()*500},
+{"id": 14, "x":Math.random()*800, "y":Math.random()*500},
+{"id": 15, "x":Math.random()*800, "y":Math.random()*500}];
 
 var svg = d3.select('svg');
 
@@ -54,30 +59,19 @@ transition.allEnemies
 move();
 setInterval(function(){ move(); }, 2000);
 
+//DRAG
 var drag = d3.behavior.drag()
-.origin(function(d) { return d; })
-.on('dragstart', dragstarted)
-.on('drag', dragged)
-.on('dragend', dragended);
+.on('drag', dragmove);
 
-function dragstarted(d) {
-  d3.event.sourceEvent.stopPropagation();
-  d3.select(this).classed('dragging', true);
+function dragmove(d){
+  var x = d3.event.x;
+  var y = d3.event.y;
+  d3.select(this).attr('x', x);
+  d3.select(this).attr('y', y);
+  // d3.select(this).attr('transform', 'translate(' + x + ',' + y + ')');
 }
 
-function dragged(d) {
-  d3.select(this)
-  .attr('x', d.x = d3.event.x)
-  .attr('y', d.y = d3.event.y);
-}
-
-function dragended(d) {
-  d3.select(this)
-  .classed('dragging', false);
-}
-
-
-//Create player
+//PLAYER
 var player = d3.select('svg').append('image')
   .attr('class', 'player')
   .attr('xlink:href', 'starfox.png')
@@ -87,13 +81,9 @@ var player = d3.select('svg').append('image')
   .attr('y', 250)
   .call(drag);
 
+//COLLISION
 
 
-
-
-//Collision
-  //figure out a formula to define collision
-  //reset score
 
 //Score
   //determine if collision results in a highscore
