@@ -6,7 +6,8 @@
     .attr('width', 800)
     .attr('height', 500)
     .style('border', '1px solid black')
-    .style('background-color', 'black');
+    .style('background-color', 'black')
+    .style('padding', '20px');
 
 
 
@@ -50,18 +51,45 @@ svg.selectAll('.enemy')
 transition.allEnemies
 };
 
+move();
 setInterval(function(){ move(); }, 2000);
+
+var drag = d3.behavior.drag()
+.origin(function(d) { return d; })
+.on('dragstart', dragstarted)
+.on('drag', dragged)
+.on('dragend', dragended);
+
+function dragstarted(d) {
+  d3.event.sourceEvent.stopPropagation();
+  d3.select(this).classed('dragging', true);
+}
+
+function dragged(d) {
+  d3.select(this)
+  .attr('x', d.x = d3.event.x)
+  .attr('y', d.y = d3.event.y);
+}
+
+function dragended(d) {
+  d3.select(this)
+  .classed('dragging', false);
+}
 
 
 //Create player
-  // d3.select('svg').append('image')
-  // .attr('class', 'player')
-  // .attr('xlink:href', 'starfox.png')
-  // .attr('width', 50)
-  // .attr('height', 50);
-  //SVG
-  //Define player (location, movement, restrictions)
-  //How to move the player (click and drag)
+var player = d3.select('svg').append('image')
+  .attr('class', 'player')
+  .attr('xlink:href', 'starfox.png')
+  .attr('width', 50)
+  .attr('height', 50)
+  .attr('x', 400)
+  .attr('y', 250)
+  .call(drag);
+
+
+
+
 
 //Collision
   //figure out a formula to define collision
